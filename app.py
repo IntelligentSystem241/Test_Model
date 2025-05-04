@@ -3,8 +3,7 @@ import pandas as pd
 from utils.preprocess import clean_data
 from utils.clustering import assign_clusters
 from utils.prediction import predict_next_position
-port = int(os.environ.get("PORT", 10000))  # PORT do Render cung cấp
-app.run(host="0.0.0.0", port=port)
+
 app = Flask(__name__)
 
 @app.route('/')
@@ -22,5 +21,8 @@ def predict():
 
     return render_template('result.html', predictions=predictions.to_dict(orient='records'))
 
-if __name__ == '__main__':
-    app.run(debug=True)
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 10000))  # Render sẽ đặt biến PORT
+    app.run(host="0.0.0.0", port=port)
+
