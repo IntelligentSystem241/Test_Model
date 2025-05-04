@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dự đoán đường đi bão</title>
+</head>
+<body>
+  <h1>Dự đoán đường đi của bão</h1>
+  <form action="/predict" method="post" enctype="multipart/form-data">
+    <label>Chọn tập tin dữ liệu bão (.csv):</label>
+    <input type="file" name="storm_file" required>
+    <button type="submit">Dự đoán</button>
+  </form>
+</body>
+</html>
