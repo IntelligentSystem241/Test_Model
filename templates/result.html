@@ -5,6 +5,18 @@
 </head>
 <body>
   <h1>Kết quả dự đoán vị trí tiếp theo</h1>
+
+  <!-- Hiển thị hàng đầu tiên -->
+  {% if predictions %}
+  <h2>Vị trí dự đoán đầu tiên:</h2>
+  <p>
+    SID: {{ predictions[0].SID }} <br>
+    Tọa độ hiện tại: ({{ predictions[0].LAT }}, {{ predictions[0].LON }}) <br>
+    Dự đoán tiếp theo: ({{ predictions[0].PRED_LAT }}, {{ predictions[0].PRED_LON }})
+  </p>
+  {% endif %}
+
+  <!-- Hiển thị bảng đầy đủ -->
   <table border="1">
     <tr>
       <th>SID</th><th>LAT</th><th>LON</th><th>PRED_LAT</th><th>PRED_LON</th>
