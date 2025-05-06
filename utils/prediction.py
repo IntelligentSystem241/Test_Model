@@ -2,6 +2,7 @@ from sklearn.ensemble import RandomForestRegressor
 
 def predict_next_position(df):
     features = ['LAT', 'LON', 'STORM_SPEED', 'STORM_DIR', 'DIST2LAND', 'cluster']
+    df['ISO_TIME'] = pd.to_datetime(df['ISO_TIME'], errors='coerce')
     X = df[features]
     y_lat = df['LAT'].shift(-1)
     y_lon = df['LON'].shift(-1)
