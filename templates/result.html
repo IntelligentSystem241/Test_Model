@@ -19,12 +19,12 @@
   <!-- Hiển thị bảng đầy đủ -->
   <table border="1">
     <tr>
-      <th>SID</th><th>ISO_TIME</th><th>LAT</th><th>LON</th><th>PRED_LAT</th><th>PRED_LON</th>
+      <th>SID</th><th>PRED_TIME</th><th>LAT</th><th>LON</th><th>PRED_LAT</th><th>PRED_LON</th>
     </tr>
     {% for row in predictions %}
     <tr>
       <td>{{ row.SID }}</td>
-      <td>{{ row.ISO_TIME }}</td>
+      <td>{{ row.PRED_TIME }}</td>
       <td>{{ row.LAT }}</td>
       <td>{{ row.LON }}</td>
       <td>{{ row.PRED_LAT }}</td>
