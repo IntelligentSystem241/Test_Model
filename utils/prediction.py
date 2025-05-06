@@ -5,6 +5,7 @@ def predict_next_position(df):
     X = df[features]
     y_lat = df['LAT'].shift(-1)
     y_lon = df['LON'].shift(-1)
+    df['PRED_TIME'] = df['ISO_TIME'].shift(-1)
 
     df = df[:-1]
     X = X[:-1]
@@ -16,4 +17,5 @@ def predict_next_position(df):
 
     df['PRED_LAT'] = rf_lat.predict(X)
     df['PRED_LON'] = rf_lon.predict(X)
-    return df[['SID','ISO_TIME', 'LAT', 'LON', 'PRED_LAT', 'PRED_LON']]
+return df[['SID','ISO_TIME', 'LAT', 'LON', 'PRED_LAT', 'PRED_LON', 'PRED_TIME']]
+
