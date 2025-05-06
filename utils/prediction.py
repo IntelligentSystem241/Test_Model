@@ -19,5 +19,5 @@ def predict_next_position(df):
     df['PRED_LAT'] = rf_lat.predict(X)
     df['PRED_LON'] = rf_lon.predict(X)
     df['PRED_TIME'] = pred_time;
-    return df[['SID','PRED_TIME', 'LAT', 'LON', 'PRED_LAT', 'PRED_LON',]
+    return df[['SID','PRED_TIME', 'LAT', 'LON', 'PRED_LAT', 'PRED_LON']]
 
