@@ -10,7 +10,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('training4.html')
 
 @app.route('/predict', methods=['POST'])
 def predict():
@@ -21,7 +21,7 @@ def predict():
     df_clustered = assign_clusters(df_clean)
     predictions = predict_next_position(df_clustered)
 
-    return render_template('result.html', predictions=predictions.to_dict(orient='records'))
+    return render_template('training4.html', predictions=predictions.to_dict(orient='records'))
 
 import os
 if __name__ == "__main__":
