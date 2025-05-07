@@ -245,13 +245,17 @@ button {
 <!-- Khối hiển thị thông tin -->
 <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 20px;">
 
+{% if predictions %}
+<!-- Khối chứa các ô thông tin dự đoán -->
+<div style="display: flex; flex-direction: column; gap: 10px; align-items: flex-end; margin-right: 200px;">
+
   <!-- Dòng 1: SID -->
-  <div class="training-btn" style="height: 30px; width: 100px; text-align: center; align-self: right;margin-left: 200px">
+  <div class="training-btn" style="height: 30px; width: 100px; text-align: right;">
     SID: {{ predictions[0].SID }}
   </div>
 
   <!-- Dòng 2: PRED_LAT và PRED_LON -->
-  <div style="display: flex; gap: 10px; justify-content: right;margin-left: 200px">
+  <div style="display: flex; gap: 10px;">
     <div class="training-btn" style="height: 30px; width: 100px; text-align: right;">
       PRED_LAT: {{ predictions[0].PRED_LAT }}
     </div>
@@ -261,7 +265,7 @@ button {
   </div>
 
   <!-- Dòng 3: LAT và LON -->
-  <div style="display: flex; gap: 10px; justify-content: right;">
+  <div style="display: flex; gap: 10px;">
     <div class="training-btn" style="height: 30px; width: 100px; text-align: right;">
       LAT: {{ predictions[0].LAT }}
     </div>
@@ -269,6 +273,9 @@ button {
       LON: {{ predictions[0].LON }}
     </div>
   </div>
+
+</div>
+{% endif %}
 
 </div>
 
