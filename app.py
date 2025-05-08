@@ -1,30 +1,340 @@
-from flask import Flask, render_template, request
-import pandas as pd
-from utils.preprocess import clean_data
-from utils.clustering import assign_clusters
-from utils.prediction import predict_next_position
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AI-Driven Cyclone Prediction</title>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      background-color: #000; /* Viền đen */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      width: 90%;
+      height: 90%;
+      background-image: url('Background.jpg'); /* 👉 Dùng ảnh thật của bạn */
+      background-size: 1000px auto;
+      background-repeat: no-repeat;
+      background-position: center;
+      position: relative;
+    }
+
+.title-box {
+  position: absolute;
+  top: 30px;
+  left: 140px;
+  font-family: 'UTM Bebas', sans-serif;
+}
+
+.title-line {
+  font-size: 70px;
+  font-weight: normal;
+  color: #231E0C; /* màu của dòng chính */
+}
+
+.title-line .highlight {
+  color: #C00000; /* màu riêng cho AI-DRIVEN */
+}
+
+/* weather button */
+.vertical-btn1 {
+  position: absolute;
+  top: 155px;
+  left: 206px;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-family: 'Barlow', sans-serif;
+  font-size: 20px;
+  font-weight: bold;
+  padding: 18px 8px;
+ background-color: rgba(166, 166, 166, 0.7);
+  color: #231E0C;
+  border: none;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+  cursor: pointer;
+  text-align: center;
+}
+/* cyclone button */
+.vertical-btn2 {
+  position: absolute;
+  top: 267px;
+  left: 206px;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-family: 'Barlow', sans-serif;
+  font-size: 20px;
+  font-weight: bold;
+  padding: 21px 8px;
+ background-color: rgba(166, 166, 166, 0.7);
+  color: #231E0C;
+  border: none;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+  cursor: pointer;
+  text-align: center;
+}
+/* history button */
+.vertical-btn3 {
+  position: absolute;
+  top: 380px;
+  left: 206px;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-family: 'Barlow', sans-serif;
+  font-size: 20px;
+  font-weight: bold;
+  padding: 24px 8px;
+ background-color: rgba(166, 166, 166, 0.7);
+  color: #231E0C;
+  border: none;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+  cursor: pointer;
+  text-align: center;
+}
+/* model button */
+.vertical-btn4 {
+  position: absolute;
+  top: 494px;
+  left: 206px;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-family: 'Barlow', sans-serif;
+  font-size: 20px;
+  font-weight: bold;
+  padding: 30px 8px;
+ background-color: rgba(127, 127, 127, 0.75);
+  color: #231E0C;
+  border: none;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+  cursor: pointer;text-align: center;
+}
+/* khung nội dung trung tâm chứa prediction result và training*/
+.center-red-box {
+  position: absolute;
+  top: 154px;
+  left: 247px;
+  width: 912px;   /* bạn có thể điều chỉnh */
+  height: 453px;
+ background-color: rgba(127, 127, 127, 0.75);
+border: none;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+
+}
+
+.result-btn, .training-btn {
+  font-family: 'Barlow', sans-serif;
+  font-size: 24px;
+  font-weight: bold;
+  padding: 8px 20px;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 3px 3px 5px rgba(0,0,0,0.3);
+  cursor: pointer;
+  /*   overflow: hidden; */
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* Màu riêng cho từng nút */
+.result-btn {
+ background-color: #7F7F7F;
+  color: #322B1A;
+}
+
+.training-btn {
+   background-color: #C2CE87;
+  color: #322B1A;
+}
+
+/* hết center-red-box*/
+    /* button prediction result*/
+#btnResult {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
+/* button training*/
+#btnTraining {
+  position: absolute;
+  top: 20px;
+  left: 270px; /* cách nút bên trái khoảng 220px */
+}
+/* button home*/
+#homeBtn {
+  position: absolute;
+  top: 78px;     /* chỉnh theo ý bạn */
+  right: 210px;
+  width: 70px;   /* hoặc kích thước ảnh thực tế */
+  height: auto;
+  cursor: pointer;
+}
+input[type="file"] {
+  font-family: 'Barlow', sans-serif;
+  font-size: 24px;
+  font-weight: bold;
+  padding: 8px 20px;
+  border: none;
+  border-radius: 15px;
+  margin-top: 20px;
+  margin-left: 500px;
+  margin-right: 10px;
+  background-color: #7F7F7F;
+  color: #322B1A;
+  width: 200px;
+    }
+button {
+  font-family: 'Barlow', sans-serif;
+  font-size: 24px;
+  font-weight: bold;
+  padding: 8px 20px;
+  border: none;
+  border-radius: 15px;
+  margin-left: auto;
+  background-color: #C2CE87;
+  color: #322B1A;}
+  </style>
 
 
+</head>
+<body>
+<!-- Khung tiêu đề -->
+  <div class="container">
+  <div class="title-box">
+  <div class="title-line">
+    <span class="highlight">AI-DRIVEN</span> CYCLONE PREDICTION
+  </div>
+  </div>
+  </div>
 
-app = Flask(__name__)
+<!-- Các nút nhấn -->
+<img src="home.png" alt="Home" id="homeBtn">
+<button id="btn-weather" class="vertical-btn1">Weather</button>
+<button id="btn-cyclone" class="vertical-btn2">Cyclone</button>
+<button id="btn-history" class="vertical-btn3">History</button>
+<button id="btn-model" class="vertical-btn4">Model</button>
+<!-- Training and predict button -->
+<div class="center-red-box">
+  <button class="result-btn" id="btnResult">Prediction Results</button>
+  <button class="training-btn" id="btnTraining">Training</button>
+    <form action="/predict" method="post" enctype="multipart/form-data">
+    <input type="file" name="storm_file" required>
+    <button type="submit">Dự đoán</button>
+  </form>
+  <div style="display: flex; flex-wrap: wrap; gap: 20px; font-family: 'Barlow', sans-serif; font-size: 18px; margin-top: 20px;margin-left: 400px">
+<div style="display: flex; flex-wrap: wrap; gap: 20px; margin-top: 20px;">
+<!-- Khối hiển thị thông tin -->
+<div style="display: flex; flex-direction: column; gap: 10px; margin-top: 20px;">
 
-@app.route('/')
-def index():
-    return render_template('training4.html')
+{% if predictions %}
+<!-- Khối thông tin căn trái gọn gàng -->
+<div style="display: flex; flex-direction: column; gap: 10px; align-items: flex-start; margin-left: 50px; font-family: Arial, sans-serif; font-size: 14px; color: #231E0C;">
 
-@app.route('/predict', methods=['POST'])
-def predict():
-    file = request.files['storm_file']
-    df = pd.read_csv(file)
+  <!-- Dòng 1: SID -->
+  <div style="display: flex; align-items: center; gap: 10px;">
+    <div style="width: 70px;">SID:</div>
+    <div class="training-btn" style="width: 120px; text-align: left;">
+      {{ predictions[0].SID }}
+    </div>
+  </div>
 
-    df_clean = clean_data(df)
-    df_clustered = assign_clusters(df_clean)
-    predictions = predict_next_position(df_clustered)
+  <!-- Dòng 2: PRED_LAT và PRED_LON -->
+  <div style="display: flex; align-items: center; gap: 20px;">
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <div style="width: 70px;">PRED_LAT:</div>
+      <div class="training-btn" style="width: 80px; text-align: left;">
+        {{ predictions[0].PRED_LAT | round(2) }}
+      </div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <div style="width: 70px;">PRED_LON:</div>
+      <div class="training-btn" style="width: 80px; text-align: left;">
+        {{ predictions[0].PRED_LON | round(2) }}
+      </div>
+    </div>
+  </div>
 
-    return render_template('training4.html', predictions=predictions.to_dict(orient='records'))
+  <!-- Dòng 3: LAT và LON -->
+  <div style="display: flex; align-items: center; gap: 20px;">
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <div style="width: 70px;">LAT:</div>
+      <div class="training-btn" style="width: 80px; text-align: left;">
+        {{ predictions[0].LAT | round(2) }}
+      </div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <div style="width: 70px;">LON:</div>
+      <div class="training-btn" style="width: 80px; text-align: left;">
+        {{ predictions[0].LON | round(2) }}
+      </div>
+    </div>
+  </div>
 
-import os
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 10000))  # Render sẽ đặt biến PORT
-    app.run(host="0.0.0.0", port=port)
+</div>
+{% endif %}
 
+
+</div>
+
+</div>
+
+
+<script>
+  function navigateTo(page) {
+    window.location.href = page + '.html';
+  }
+/*Script Chuyển trang*/
+  window.onload = function () {
+    document.getElementById('btn-weather').onclick = function () {
+      navigateTo('weather');
+    };
+
+    document.getElementById('btn-cyclone').onclick = function () {
+      navigateTo('cyclone');
+    };
+
+    document.getElementById('btn-history').onclick = function () {
+      navigateTo('history');
+    };
+
+    document.getElementById('btn-model').onclick = function () {
+      navigateTo('model');
+    };
+
+    document.getElementById('btnResult').onclick = function () {
+      navigateTo('model');
+    };
+
+    document.getElementById('btnTraining').onclick = function () {
+      navigateTo('training');
+    };
+
+     document.getElementById('homeBtn').onclick = function () {
+      window.location.href = 'welcome.html';
+    };
+  };
+
+</script>
+
+</body>
+</html>
