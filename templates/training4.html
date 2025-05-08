@@ -250,13 +250,15 @@ button {
 <!-- Khối thông tin căn trái gọn gàng -->
 <div style="display: flex; flex-direction: column; gap: 10px; align-items: flex-start; margin-left: 50px; font-family: Arial, sans-serif; font-size: 14px; color: #231E0C;">
 
-  <!-- Dòng 1: SID -->
-  <div style="display: flex; align-items: center; gap: 10px;">
-    <div style="width: 70px;">SID:</div>
-    <div class="training-btn" style="width: 120px; text-align: left;">
-      {{ predictions[0].SID }}
-    </div>
+
+  <!-- Dòng 1: ISO_TIME -->
+<div style="display: flex; align-items: center; gap: 10px;">
+  <div style="width: 70px;">TIME:</div>
+  <div class="training-btn" style="min-width: 120px; text-align: left;">
+    {{ predictions[0].ISO_TIME }}
   </div>
+</div>
+
 
   <!-- Dòng 2: PRED_LAT và PRED_LON -->
   <div style="display: flex; align-items: center; gap: 20px;">
