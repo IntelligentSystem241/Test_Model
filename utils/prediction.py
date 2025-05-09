@@ -12,7 +12,7 @@ def predict_next_position(df):
     X = X[:-1]
     y_lat = y_lat[:-1]
     y_lon = y_lon[:-1]
-    pred_time = pred_time[:-1]
+    pred_time = pred_time.iloc[:-1].reset_index(drop=True) 
     rf_lat = RandomForestRegressor().fit(X, y_lat)
     rf_lon = RandomForestRegressor().fit(X, y_lon)
 
