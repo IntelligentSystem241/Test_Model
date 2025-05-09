@@ -16,7 +16,7 @@ def index():
 def predict():
     file = request.files['storm_file']
     df = pd.read_csv(file)
-
+    df = pd.read_csv(file_path, skiprows=[1], low_memory=False)
     df_clean = clean_data(df)
     df_clustered = assign_clusters(df_clean)
     predictions = predict_next_position(df_clustered)
