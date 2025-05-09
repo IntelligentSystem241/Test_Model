@@ -15,7 +15,6 @@ def index():
 @app.route('/predict', methods=['POST'])
 def predict():
     file = request.files['storm_file']
-    df = pd.read_csv(file)
     df = pd.read_csv(file, skiprows=[1], low_memory=False)
     df_clean = clean_data(df)
     df_clustered = assign_clusters(df_clean)
