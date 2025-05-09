@@ -10,4 +10,7 @@ def clean_data(df):
     df = df.dropna(subset=['LAT', 'LON'])
 
     df = df.sort_values(by=['SID', 'ISO_TIME'])
+        # In 10 dòng đầu tiên để kiểm tra ISO_TIME
+    print("\n[DEBUG] ISO_TIME sau khi xử lý:")
+    print(df[['SID', 'ISO_TIME']].head(10))
     return df
