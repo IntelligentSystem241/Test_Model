@@ -239,10 +239,24 @@ button {
   <button class="training-btn" id="btnTraining">Training</button>
     <form action="/predict" method="post" enctype="multipart/form-data">
     <input type="file" name="storm_file" required>
-    <label for="selected_time">Chọn thời gian:</label>
-    <input type="datetime-local" id="selected_time" name="selected_time" required>
-    <button type="submit">Dự đoán</button>
-      
+<div style="display: flex; align-items: center; gap: 1px; margin-left: 400px; margin-top: 20px;">
+  <label for="selected_time" style="color: white; font-family: 'Barlow', sans-serif;">Chọn thời gian:</label>
+
+  <!-- Ô nhập thời gian -->
+  <input type="datetime-local" id="selected_time" name="selected_time" required style="
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 10px;
+    border: none;
+    font-family: 'Barlow', sans-serif';
+    background-color: white;
+    color: black;
+  ">
+
+  <!-- Nút dự đoán dùng style training-btn -->
+  <button type="submit" class="training-btn">Dự đoán</button>
+</div>
+
   </form>
   <div style="display: flex; flex-wrap: wrap; gap: 20px; font-family: 'Barlow', sans-serif; font-size: 18px; margin-top: 20px;margin-left: 400px">
 <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-top: 20px;">
