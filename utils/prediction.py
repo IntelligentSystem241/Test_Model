@@ -2,7 +2,7 @@ from sklearn.ensemble import RandomForestRegressor
 import pandas as pd
 from flask import request
 
-def predict_next_position(df):
+def predict_next_position(df, selected_time_str):
     features = ['LAT', 'LON', 'STORM_SPEED', 'STORM_DIR', 'DIST2LAND', 'cluster']
 
     # Đảm bảo ISO_TIME là kiểu datetime
