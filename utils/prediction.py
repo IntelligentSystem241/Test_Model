@@ -31,11 +31,15 @@ def predict_next_position(df, selected_time_str):
     df['PRED_LON'] = rf_lon.predict(X)
     df['PRED_TIME'] = pred_time
 
-    selected_time_str = request.form['selected_time']
-    selected_time = datetime.strptime(selected_time_str, '%m/%d/%Y %H:%M')
 
-    # Tìm hàng gần nhất (có thể dùng khoảng ±1 giờ hoặc chính xác)
-    closest = storm_data.iloc[(storm_data['ISO_TIME'] - selected_time).abs().argsort()[:1]]
+        # Bước 1: Chuyển từ định dạng HTML input sang datetime object
+    selected_time = datetime.strptime(selected_time_str, '%Y-%m-%dT%H:%M')
+
+
+    # Bước 3: Tìm dòng có thời gian gần nhất với thời gian được chọn
+    closest = df.iloc[(df['ISO_TIME'] - selected_time).abs().argsort()[:1]]
+
+    # Bước 4: Trả kết quả dạng dict
     result = {
         'time': closest['ISO_TIME'].values[0],
         'lat': closest['LAT'].values[0],
