@@ -29,4 +29,16 @@ def predict_next_position(df):
     df['PRED_LON'] = rf_lon.predict(X)
     df['PRED_TIME'] = pred_time
 
+    selected_time_str = request.form['selected_time']
+    selected_time = datetime.strptime(selected_time_str, '%m/%d/%Y %H:%M')
+
+    # Tìm hàng gần nhất (có thể dùng khoảng ±1 giờ hoặc chính xác)
+    closest = storm_data.iloc[(storm_data['ISO_TIME'] - selected_time).abs().argsort()[:1]]
+    result = {
+        'time': closest['ISO_TIME'].values[0],
+        'lat': closest['LAT'].values[0],
+        'lon': closest['LON'].values[0],
+        'pred_lat': closest['PRED_LAT'].values[0],
+        'pred_lon': closest['PRED_LON'].values[0]
+    }
     return df[['SID', 'PRED_TIME', 'LAT', 'LON', 'PRED_LAT', 'PRED_LON']]
