@@ -18,7 +18,8 @@ def predict():
     df = pd.read_csv(file, skiprows=[1], low_memory=False)
     df_clean = clean_data(df)
     df_clustered = assign_clusters(df_clean)
-    predictions = predict_next_position(df_clustered)
+    selected_time_str = request.form['selected_time']
+    predictions = predict_next_position(df_clustered, selected_time_str)
 
     return render_template('training4.html', predictions=predictions.to_dict(orient='records'))
 
