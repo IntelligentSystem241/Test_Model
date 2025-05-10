@@ -1,5 +1,6 @@
 from sklearn.ensemble import RandomForestRegressor
 import pandas as pd
+from flask import request
 
 def predict_next_position(df):
     features = ['LAT', 'LON', 'STORM_SPEED', 'STORM_DIR', 'DIST2LAND', 'cluster']
