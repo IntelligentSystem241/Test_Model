@@ -4,6 +4,10 @@ from flask import request
 from datetime import datetime, timedelta
 
 def predict_next_position(df, selected_time_str):
+    from datetime import datetime
+    import pandas as pd
+    from sklearn.ensemble import RandomForestRegressor
+
     features = ['LAT', 'LON', 'STORM_SPEED', 'STORM_DIR', 'DIST2LAND', 'cluster']
     df['ISO_TIME'] = pd.to_datetime(df['ISO_TIME'], errors='coerce')
 
@@ -26,8 +30,11 @@ def predict_next_position(df, selected_time_str):
     df['PRED_TIME'] = pred_time
 
     selected_time = datetime.strptime(selected_time_str, '%Y-%m-%dT%H:%M')
+    print(f"[DEBUG] Selected time from user: {selected_time}")
+
     closest = df.iloc[(df['ISO_TIME'] - selected_time).abs().argsort()[:1]]
     formatted_time = pd.to_datetime(closest['ISO_TIME'].values[0]).strftime('%m/%d/%Y %H:%M')
+    print(f"[DEBUG] Closest time in data: {formatted_time}")
 
     result = {
         'time': formatted_time,
