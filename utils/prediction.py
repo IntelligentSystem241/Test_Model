@@ -27,10 +27,10 @@ def predict_next_position(df, selected_time_str):
 
     selected_time = datetime.strptime(selected_time_str, '%Y-%m-%dT%H:%M')
     closest = df.iloc[(df['ISO_TIME'] - selected_time).abs().argsort()[:1]]
-    closest['ISO_TIME'] = pd.to_datetime(closest['ISO_TIME']).dt.strftime('%m/%d/%Y %H:%M')
+    formatted_time = pd.to_datetime(closest['ISO_TIME'].values[0]).strftime('%m/%d/%Y %H:%M')
 
     result = {
-        'time': closest['ISO_TIME'].values[0],
+        'time': formatted_time,
         'lat': closest['LAT'].values[0],
         'lon': closest['LON'].values[0],
         'pred_lat': closest['PRED_LAT'].values[0],
